@@ -1,0 +1,30 @@
+{
+  "name": "contribution-counter",
+  "version": "0.0.1",
+  "description": "Show the count of all user contribution in github",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nebulous-mind/contribution-counter.git"
+  },
+  "keywords": [
+    "github",
+    "contribution",
+    "counter"
+  ],
+  "author": "Josbel Luna",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nebulous-mind/contribution-counter/issues"
+  },
+  "homepage": "https://github.com/nebulous-mind/contribution-counter#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "node-fetch": "^2.6.1",
+    "yargs": "^16.2.0"
+  }
+}
