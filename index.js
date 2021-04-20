@@ -8,7 +8,7 @@ const { _: username, token } = yargs(hideBin(process.argv)).argv
 
 const fetchContributions = require('./fetch-contributions')
 
-if (!token) {
+if (!token || typeof token !== 'string') {
   console.error(chalk.red('No access was token provided.'))
   process.exit(1)
 }
