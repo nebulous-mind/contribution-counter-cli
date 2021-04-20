@@ -6,7 +6,7 @@ const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 const { _: username, token } = yargs(hideBin(process.argv)).argv
 
-const fetchContributions = require('./fetch-contributions')
+const { fetchContributions } = require('./fetch-contributions')
 
 if (!token || typeof token !== 'string') {
   console.error(

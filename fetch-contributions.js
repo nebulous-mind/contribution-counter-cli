@@ -1,5 +1,3 @@
-const fetch = require('node-fetch')
-
 async function fetchContributions(token, username) {
   const years = await getContributionYears(token, username)
   const yearsAsc = years.sort((a, b) => a > b)
@@ -10,35 +8,25 @@ async function fetchContributions(token, username) {
   return contributions.reduce((a, i) => a + i, 0)
 }
 
-function fetchGithubAPI(token, query) {
-  const body = JSON.stringify({ query })
-
-  return fetch('https://api.github.com/graphql', {
-    method: 'POST',
-    body,
-    headers: { Authorization: `bearer ${token}` },
-  }).then((resp) => resp.json())
-}
+const { fetchGithubAPI } = require('./github-utils')
 
 async function getContributionYears(token, username) {
-  const query = `
-  query { 
-    user(login: "${username}") { 
+  const query = `query {
+    user(login: "${username}") {
       contributionsCollection {
         contributionYears
       }
     }
   }`
 
-  const years = await fetchGithubAPI(token, query)
-  return years.data.user.contributionsCollection.contributionYears
+  const { data } = await fetchGithubAPI(token, query)
+  return data.user.contributionsCollection.contributionYears
 }
 
 async function getContributionCountPerYear(token, username, year) {
   const from = new Date(year, 0, 1).toISOString()
-  const query = `
-  query { 
-    user(login: "${username}") { 
+  const query = `query {
+    user(login: "${username}") {
       contributionsCollection(from: "${from}") {
         contributionYears
         restrictedContributionsCount
@@ -49,9 +37,13 @@ async function getContributionCountPerYear(token, username, year) {
     }
   }`
 
-  const contributions = await fetchGithubAPI(token, query)
-  return contributions.data.user.contributionsCollection.contributionCalendar
+  const { data } = await fetchGithubAPI(token, query)
+  return data.user.contributionsCollection.contributionCalendar
     .totalContributions
 }
 
-module.exports = fetchContributions
+module.exports = {
+  fetchContributions,
+  getContributionYears,
+  getContributionCountPerYear,
+}
