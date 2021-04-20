@@ -7,6 +7,12 @@ const { hideBin } = require('yargs/helpers')
 const { _: username, token } = yargs(hideBin(process.argv)).argv
 
 const fetchContributions = require('./fetch-contributions')
+
+if (!token) {
+  console.error(chalk.red('No access was token provided.'))
+  process.exit(1)
+}
+
 fetchContributions(token, username).then((contributionCount) => {
   console.log(chalk.green(contributionCount))
 })
