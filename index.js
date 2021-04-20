@@ -11,8 +11,7 @@ const fetchContributions = require('./fetch-contributions')
 if (!token || typeof token !== 'string') {
   console.error(
     chalk.red(`
-      No github access token was provided:
-        An access token is needed to access the contributor's information.
+      You need to provide a github access token to access the contributor's information, please add --token your-access-token.
   `)
   )
   process.exit(1)
