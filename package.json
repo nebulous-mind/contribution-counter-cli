@@ -1,6 +1,6 @@
 {
   "name": "contribution-counter-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Show the count of all user contribution in github",
   "main": "index.js",
   "scripts": {
