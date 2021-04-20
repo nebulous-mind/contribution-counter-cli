@@ -1,9 +1,11 @@
-const fetch = require('node-fetch');
+const fetch = require('node-fetch')
 
 async function fetchContributions(token, username) {
   const years = await getContributionYears(token, username)
-  const yearsAsc = years.sort((a,b) => a > b)
-  const contributions = await Promise.all(yearsAsc.map(year => getContributionCountPerYear(token, username, year)))
+  const yearsAsc = years.sort((a, b) => a > b)
+  const contributions = await Promise.all(
+    yearsAsc.map((year) => getContributionCountPerYear(token, username, year))
+  )
 
   return contributions.reduce((a, i) => a + i, 0)
 }
@@ -11,15 +13,15 @@ async function fetchContributions(token, username) {
 function fetchGithubAPI(token, query) {
   const body = JSON.stringify({ query })
 
-	return fetch("https://api.github.com/graphql", {
-		method: "POST",
-		body,
-    headers: { Authorization: `bearer ${token}`}
-	}).then((resp) => resp.json())
-} 
+  return fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    body,
+    headers: { Authorization: `bearer ${token}` },
+  }).then((resp) => resp.json())
+}
 
 async function getContributionYears(token, username) {
-	const query = `
+  const query = `
   query { 
     user(login: "${username}") { 
       contributionsCollection {
@@ -29,12 +31,12 @@ async function getContributionYears(token, username) {
   }`
 
   const years = await fetchGithubAPI(token, query)
-	return years.data.user.contributionsCollection.contributionYears
+  return years.data.user.contributionsCollection.contributionYears
 }
 
 async function getContributionCountPerYear(token, username, year) {
   const from = new Date(year, 0, 1).toISOString()
-	const query = `
+  const query = `
   query { 
     user(login: "${username}") { 
       contributionsCollection(from: "${from}") {
@@ -48,7 +50,8 @@ async function getContributionCountPerYear(token, username, year) {
   }`
 
   const contributions = await fetchGithubAPI(token, query)
-  return contributions.data.user.contributionsCollection.contributionCalendar.totalContributions
+  return contributions.data.user.contributionsCollection.contributionCalendar
+    .totalContributions
 }
 
 module.exports = fetchContributions
