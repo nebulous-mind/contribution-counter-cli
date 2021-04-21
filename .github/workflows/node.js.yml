@@ -20,5 +20,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
       - run: npm ci
-      - run: npm run build --if-present
       - run: npm test:ci
